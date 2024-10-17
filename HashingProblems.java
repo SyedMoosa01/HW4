@@ -1,5 +1,5 @@
 /*
- * *** YOUR NAME GOES HERE / YOUR SECTION NUMBER ***
+ * *** FNU Syed Moosa Aleem / Masters in CS ***
  *
  * This HashingProblems object contains three methods / problems that you must
  * complete utilize the HashMap object within the Java's Collection Framework Library.
@@ -32,16 +32,20 @@ class HashingProblems {
      */
 
     public double getAverage(HashMap<Integer, Integer> map, int[] array) {
+        double sum = 0;
+        int count = 0;
 
-        /*
-         * ADD YOUR CODE HERE - DO NOT FORGET TO ADD YOU NAME AT TOP OF FILE
-         *
-         * Note: if NO values found in common between the HashMap and supplied array,
-         * returning 0.0 is NOT correct, as that is not the average value. Whereas
-         * returning 0.0/0.0 IS correct (which would return a non-number).
-         */
+        // Iterate through the array of integers
+        for (int key : array) {
+            // If the key exists in the HashMap, add its value to the sum
+            if (map.containsKey(key)) {
+                sum += map.get(key);
+                count++;
+            }
+        }
 
-         return 0.0 / 0.0;
+        // If no matching keys are found, return NaN
+        return count == 0 ? 0.0 / 0.0 : sum / count;
   }
 
 
@@ -53,15 +57,15 @@ class HashingProblems {
      */
 
   public ArrayList<String> odd(HashMap<Integer, String> map) {
-    
       ArrayList<String> result = new ArrayList<>();
 
-      /*
-       * ADD YOUR CODE HERE
-       *
-       * Hint: Consider iterating over the HashMap using the keySet method.
-       */
-
+      // Iterate through the keys in the HashMap
+      for (Integer key : map.keySet()) {
+          // If the key is odd, add the corresponding value to the result list
+          if (key % 2 != 0) {
+              result.add(map.get(key));
+          }
+      }
 
       return result;
   }
@@ -106,11 +110,24 @@ class HashingProblems {
 
   public int twoSums(int[] numbers, int k) {
 
-      /*
-       * ADD YOUR CODE HERE
-       */
+      // HashSet to store the numbers
+      HashSet<Integer> set = new HashSet<>();
+      int count = 0;
 
-      return -1;
+      // Add all elements of the array to the HashSet
+      for (int num : numbers) {
+          set.add(num);
+      }
+
+      // Check for valid pairs
+      for (int num : numbers) {
+          // Check if the difference exists in the HashSet
+          if (set.contains(num - k)) {
+              count++;
+          }
+      }
+
+      return count;
   }
 
 } /* end class HashingProblems */

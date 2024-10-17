@@ -1,5 +1,5 @@
 /*
- * *** YOUR NAME GOES HERE / YOUR SECTION NUMBER ***
+ * *** FNU SYED MOOSA ALEEM / Masters in CS ***
  *
  * This hashMap object represents an over simplification of Java's implementation of HashMap within
  * Java's Collection Framework Library. You are to complete the following methods:
@@ -220,17 +220,35 @@ class myHashMap<K,V> {
      */
 
     public V remove(K key) {
+        int index = getBucketIndex(key);   // Get the index based on the key's hash.
+        HashNode<K, V> head = bucket.get(index);  // Get the head of the linked list.
 
-        /*
-         * ADD YOUR CODE HERE
-         *
-         * Review the code in the whole object to understand teh data structures layout.
-         * Additionally, review the method put() for inserting a new Key / Value pair into
-         * the HashMap. This method will do the opposite by removing an element. Do see
-         * the return value discussion in this method's prologue to make sure the correct
-         * return value is returned the invoking function based on the remove outcome.
-         */
+        // If the bucket is empty, return null as key doesn't exist.
+        if (head == null) {
+            return null;
+        }
 
+        // If the key is in the first node, remove it.
+        if (head.key.equals(key)) {
+            V oldValue = head.value;  // Store the value to return.
+            bucket.set(index, head.next);  // Remove the head by pointing to the next node.
+            size--;  // Decrease the size of the map.
+            return oldValue;  // Return the old value.
+        }
+
+        // Search for the key in the linked list.
+        HashNode<K, V> prev = head;
+        while (prev.next != null) {
+            if (prev.next.key.equals(key)) {
+                V oldValue = prev.next.value;  // Store the value to return.
+                prev.next = prev.next.next;  // Remove the node from the list.
+                size--;  // Decrease the size of the map.
+                return oldValue;  // Return the old value.
+            }
+            prev = prev.next;
+        }
+
+        // If the key is not found, return null.
         return null;
     }
 
@@ -398,15 +416,25 @@ class myHashMap<K,V> {
      */
 
     public V replace(K key, V val) {
+        // Get the index of the bucket where the key may exist
+        int index = getBucketIndex(key);
 
-        /*
-         * ADD YOUR CODE HERE - DO NOT FORGET TO ADD YOUR NAME AT TOP OF FILE
-         *
-         * Make sure you return the proper value based on the outcome of this method's
-         * replace (see method's prologue above).
-         */
+        // Get the head of the linked list at the computed bucket index
+        HashNode<K, V> head = bucket.get(index);
 
-        return val;
+        // Traverse the linked list to find the key
+        while (head != null) {
+            if (head.key.equals(key)) {
+                // If the key is found, replace the value and return the old value
+                V oldValue = head.value;
+                head.value = val;  // Set the new value
+                return oldValue;   // Return the old value
+            }
+            head = head.next;
+        }
+
+        // If the key does not exist, return null
+        return null;
     }
 
     
@@ -427,13 +455,23 @@ class myHashMap<K,V> {
 
     public boolean replace(K key, V oldVal, V newVal) {
 
-        /*
-         * ADD YOUR CODE HERE
-         *
-         * This method should apply the precondition (aka, the Key already exists with the
-         * value 'oldval', and is so, it SHOULD call replace(K, V) for code reuse.
-         */
+        // Get the index of the bucket where the key may exist
+        int index = getBucketIndex(key);
 
+        // Get the head of the linked list at the computed bucket index
+        HashNode<K, V> head = bucket.get(index);
+
+        // Traverse the linked list to find the key
+        while (head != null) {
+            if (head.key.equals(key) && head.value.equals(oldVal)) {
+                // If the key is found and the current value matches oldVal, replace it
+                head.value = newVal;  // Set the new value
+                return true;  // Return true indicating successful replacement
+            }
+            head = head.next;
+        }
+
+        // If the key does not exist or the current value does not match oldVal, return false
         return false;
     }
 
